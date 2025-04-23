@@ -1,0 +1,45 @@
+# Define the services and networks for local development
+version: "3.8"
+
+services:
+  # Node.js application service
+  node-app:
+    build:
+      context: ./docker
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000" # Map port 3000 on the host to port 3000 in the container
+    volumes:
+      - ./src:/app # Mount the source code for live updates
+    environment:
+      - NODE_ENV=development # Set the environment variable
+    depends_on:
+      - python-app # Ensure the Python app starts first
+
+  # Python application service
+  python-app:
+    build:
+      context: ./docker
+      dockerfile: Dockerfile.python
+    ports:
+      - "5000:5000" # Map port 5000 on the host to port 5000 in the container
+    volumes:
+      - ./src:/app # Mount the source code for live updates
+    environment:
+      - FLASK_ENV=development # Set the environment variable
+
+  # Database service (example: PostgreSQL)
+  db:
+    image: postgres:13
+    ports:
+      - "5432:5432" # Map port 5432 on the host to port 5432 in the container
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: devops_template
+    volumes:
+      - db_data:/var/lib/postgresql/data # Persist database data
+
+# Define named volumes for persistent data
+volumes:
+  db_data:
