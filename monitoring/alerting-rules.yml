@@ -1,0 +1,20 @@
+groups:
+  - name: application-alerts
+    rules:
+      - alert: HighCPUUsage
+        expr: rate(node_cpu_seconds_total[1m]) > 0.8
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High CPU usage detected"
+          description: "CPU usage is above 80% for the last 2 minutes."
+
+      - alert: InstanceDown
+        expr: up == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Instance down"
+          description: "An instance is not reachable for the last 1 minute."

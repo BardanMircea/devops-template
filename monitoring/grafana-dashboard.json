@@ -1,0 +1,27 @@
+{
+  "dashboard": {
+    "title": "Application Metrics",
+    "panels": [
+      {
+        "type": "graph",
+        "title": "HTTP Requests",
+        "targets": [
+          {
+            "expr": "rate(http_requests_total[1m])",
+            "legendFormat": "{{method}} {{status}}"
+          }
+        ]
+      },
+      {
+        "type": "graph",
+        "title": "CPU Usage",
+        "targets": [
+          {
+            "expr": "rate(node_cpu_seconds_total[1m])",
+            "legendFormat": "{{cpu}}"
+          }
+        ]
+      }
+    ]
+  }
+}
